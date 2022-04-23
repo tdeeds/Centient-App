@@ -17,7 +17,7 @@ export default function AddExpense({navigation}) {
 
     return (
         <View style={styles.container}>
-            <Image style = {styles.background} source = {require('../assets/IMG_0008.jpg')}/>
+            <Image style={styles.background} source={require('../assets/IMG_0008.jpg')}/>
             <Formik
                 initialValues={{
                     category: '',
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.8)",
         justifyContent: "center"
     },
-    background:{
-        flex:.3,
+    background: {
+        flex: .3,
         width: '100%',
         height: '100%',
         marginBottom: 30

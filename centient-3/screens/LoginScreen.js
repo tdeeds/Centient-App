@@ -1,5 +1,5 @@
-import {Pressable, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import React , {useState} from "react";
+import {Pressable, Image, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView} from "react-native";
+import React, {useState} from "react";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import {useDispatch} from "react-redux";
@@ -10,8 +10,8 @@ import {Input} from "react-native-elements";
 
 
 const LoginSchema = Yup.object().shape({
-    user: Yup.string().max(10,'Short usernames only amigo').required('Required'),
-    password: Yup.string().required('Required').min(6,'Must have at least 6 characters!').max(25,'At most 25 characters allowed!'),
+    user: Yup.string().max(10, 'Short usernames only amigo').required('Required'),
+    password: Yup.string().required('Required').min(6, 'Must have at least 6 characters!').max(25, 'At most 25 characters allowed!'),
 })
 
 function LoginScreen({navigation}) {
@@ -29,8 +29,8 @@ function LoginScreen({navigation}) {
     };
 
     return (
-        <View style = {styles.container}>
-            <Image style = {styles.background} source = {require('../assets/IMG_0008.jpg')}/>
+        <KeyboardAvoidingView style={styles.container}>
+            <Image style={styles.background} source={require('../assets/IMG_0008.jpg')}/>
             <Formik
                 initialValues={{
                     user: '',
@@ -38,7 +38,7 @@ function LoginScreen({navigation}) {
                 }}
                 validationSchema={LoginSchema}
                 onSubmit={values => {
-                    dispatch(authAction.registerUser(values))
+                    dispatch(authAction.loginUser(values))
                 }}>
                 {props => (
                     <View>
@@ -64,7 +64,7 @@ function LoginScreen({navigation}) {
                         />
                         <Input
                             style={styles.textStyles}
-                            password = {true}
+                            password={true}
                             placeholder="P A S S W O R D"
                             placeholderTextColor="#ffffff"
                             secureTextEntry={!data.secureTextEntry}
@@ -94,20 +94,21 @@ function LoginScreen({navigation}) {
                             errorMessage={props.touched.password && props.errors.password}
                         />
                         <TouchableOpacity>
-                            <Pressable style={styles.forgot_button} onPress={() => navigation.navigate('ForgotPassword')} >
+                            <Pressable style={styles.forgot_button}
+                                       onPress={() => navigation.navigate('ForgotPassword')}>
                                 <Text style={styles.textStyles1}> Forgot Password? </Text>
                             </Pressable>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.login} onPress={() => navigation.navigate('Home')}>
+                        <TouchableOpacity style={styles.login} onPress={props.handleSubmit}>
                             <Text style={styles.textStyles1}>L O G I N</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style = {styles.signUp} onPress={() => navigation.navigate('SignUp')} >
-                            <Text style={styles.textStyles}> S I G N   U P</Text>
+                        <TouchableOpacity style={styles.signUp} onPress={() => navigation.navigate('SignUp')}>
+                            <Text style={styles.textStyles}> S I G N U P</Text>
                         </TouchableOpacity>
                     </View>
                 )}
             </Formik>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -119,31 +120,31 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.8)",
         justifyContent: "center"
     },
-    background:{
-        flex:.3,
+    background: {
+        flex: .3,
         width: '100%',
         height: '100%',
         marginBottom: 30
     },
     login: {
-        marginLeft:"10%",
-        width:"40%",
-        borderRadius:25,
-        height:50,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop:40,
-        backgroundColor:"rgba(0,0,0,0.8)",
+        marginLeft: "10%",
+        width: "40%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        backgroundColor: "rgba(0,0,0,0.8)",
     },
     signUp: {
-        marginLeft:"52%",
-        width:"40%",
-        borderRadius:25,
-        height:50,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop:-50,
-        backgroundColor:"#ffffff",
+        marginLeft: "52%",
+        width: "40%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: -50,
+        backgroundColor: "#ffffff",
     },
     forgot_button: {
         marginTop: -5,

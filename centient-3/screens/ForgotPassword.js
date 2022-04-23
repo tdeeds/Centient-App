@@ -1,18 +1,19 @@
-import { StyleSheet, Text, View , Image, TouchableOpacity, } from 'react-native';
-import { Formik } from 'formik';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Alert,} from 'react-native';
+import {Formik} from 'formik';
 
 import * as authAction from "../redux/actions/authAction";
 import {useDispatch} from "react-redux";
 import {Input} from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
+import {LOGIN_USER_FAIL, LOGIN_USER_SUCCESS} from "../redux/actions/authAction";
 
 
 function ForgotPassword({navigation}) {
     const dispatch = useDispatch();
-    return(
+    return (
         <View style={styles.container}>
-            <Image style = {styles.background} source = {require('../assets/IMG_0008.jpg')}/>
+            <Image style={styles.background} source={require('../assets/IMG_0008.jpg')}/>
             <Formik
                 initialValues={{
                     email: '',
@@ -45,7 +46,7 @@ function ForgotPassword({navigation}) {
                             errorMessage={props.touched.email && props.errors.email}
                         />
                         <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('Login')}>
-                            <Text style={styles.textStyles}>R E S E T   P A S S W O R D</Text>
+                            <Text style={styles.textStyles}>R E S E T P A S S W O R D</Text>
                         </TouchableOpacity>
                     </View>
                 )}
@@ -63,20 +64,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.8)',
         justifyContent: "center"
     },
-    background:{
-        flex:.3,
+    background: {
+        flex: .3,
         width: '100%',
         height: '100%'
     },
     submitButton: {
-        marginLeft:"10%",
-        width:"80%",
-        borderRadius:25,
-        height:50,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop:40,
-        backgroundColor:"#ffff",
+        marginLeft: "10%",
+        width: "80%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        backgroundColor: "#ffff",
     },
     textStyles: {
         color: "black",

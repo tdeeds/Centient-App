@@ -21,7 +21,7 @@ export default function Home({navigation}) {
                 <Text style={styles.textStyles}>L O G I N</Text>
             </TouchableOpacity>
             <View>
-                <TouchableOpacity style={styles.addExpense} onPress={() => navigation.navigate('AddExpense')} >
+                <TouchableOpacity style={styles.addExpense} onPress={() => navigation.navigate('AddExpense')}>
                     <Image source={require('../assets/plus.jpg')} style={styles.plus}/>
                 </TouchableOpacity>
             </View>

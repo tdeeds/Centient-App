@@ -1,5 +1,5 @@
 {
-  "name": "centient-app",
+  "name": "centient-3",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -11,26 +11,27 @@
   },
   "dependencies": {
     "@react-navigation/native-stack": "^6.6.1",
+    "@redux-devtools/extension": "^3.2.2",
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
     "formik": "^2.2.9",
+    "install": "^0.13.0",
+    "npm": "^8.7.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-animatable": "^1.3.3",
     "react-native-elements": "^3.4.2",
+    "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
-    "react-navigation": "^4.4.4",
-    "react-redux": "^8.0.0",
-    "redux": "^4.1.2",
-    "redux-devtools-extension": "^2.13.9",
+    "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@react-navigation/native": "^6.0.10",
-    "react-native-vector-icons": "^9.1.0"
+    "react-redux": "^8.0.1"
   },
   "private": true
 }

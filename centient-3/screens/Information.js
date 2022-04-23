@@ -109,20 +109,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.8)',
         justifyContent: "center"
     },
-    background:{
-        flex:.3,
+    background: {
+        flex: .3,
         width: '100%',
         height: '100%'
     },
     submitButton: {
-        marginLeft:"10%",
-        width:"80%",
-        borderRadius:25,
-        height:50,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop:40,
-        backgroundColor:"#ffff",
+        marginLeft: "10%",
+        width: "80%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        backgroundColor: "#ffff",
     },
     textStyles: {
         fontSize: 17,

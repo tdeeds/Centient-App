@@ -1,9 +1,6 @@
-import { StyleSheet, Text, View , Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
-import React , {useState} from "react";
-
-
-
+import React, {useState} from "react";
 
 
 export default function Tracking({navigation}) {
@@ -34,14 +31,14 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     submitButton: {
-        marginLeft:"10%",
-        width:"80%",
-        borderRadius:25,
-        height:50,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop:40,
-        backgroundColor:"#ffff",
+        marginLeft: "10%",
+        width: "80%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        backgroundColor: "#ffff",
     },
     textStyles: {
         fontSize: 17,
