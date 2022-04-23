@@ -1,11 +1,15 @@
 package com.backend.centient.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.lang.NonNull;
+import javax.persistence.*;
+import java.util.Set;
 
-import java.util.UUID;
 
-public class Client {
+@Entity
+@Table(name = "users", uniqueConstraints = {
+@UniqueConstraint(columnNames = {"username"}),
+@UniqueConstraint(columnNames = {"email"})
+})
+public class User {
 
     private final UUID id;
 
