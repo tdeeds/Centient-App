@@ -3,6 +3,7 @@ package com.backend.centient.controller;
 
 import com.backend.centient.dto.AuthenticationRequest;
 import com.backend.centient.dto.AuthenticationResponse;
+import com.backend.centient.dto.SignupRequest;
 import com.backend.centient.util.jwtUtil;
 import com.backend.centient.model.User;
 import com.backend.centient.repository.UserRepository;
@@ -33,10 +34,13 @@ public class AuthController {
     jwtUtil jwtUtil;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
-    UserDetailsService userDetailsService;
+    SecurityUserDetailsService userDetailsService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -65,7 +69,23 @@ public class AuthController {
        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) throws Exception{
+
+        if (userDetailsService.loadUserByUsername(signUpRequest.getUsername()) != null) {
+            throw new Exception("User Already Exists");
+        }
+
+        User user = new User(signUpRequest.getUsername(),signUpRequest.getEmail(),passwordEncoder.encode(signUpRequest.getPassword()));
+
+         userRepository.save(user);
+
+        return ResponseEntity.ok(("User registered successfully!"));
+    }
+
 }
+
+
 
 
 

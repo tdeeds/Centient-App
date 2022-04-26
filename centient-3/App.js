@@ -21,7 +21,9 @@ const AppWrapper = () => {
 };
 
 function App() {
-
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.auth.token);
+    const loading = useSelector(state => state.loading);
 
     return (
         <NavigationContainer>

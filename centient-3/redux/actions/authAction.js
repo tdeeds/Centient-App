@@ -11,21 +11,20 @@ const SHOW_LOADING = <ActivityIndicator/>;
 
 
 export const registerUser = authData => {
-    const {email, user, password} = authData;
-
+    console.log("hello");
+    const {username, password} = authData;
 
     return async dispatch => {
         dispatch({type: SHOW_LOADING, payload: 'Signing up...'})
         try {
-            const result = await fetch(`http://10.252.178.91:8080/api/auth/signup`, {
+            const result = await fetch(`localhost:8080/api/authenticate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email,
-                    user,
-                    password,
+                    username,
+                    password
                 }),
             });
             const resultData = await result.json();
@@ -51,32 +50,30 @@ export const registerUser = authData => {
 }
 
 export const loginUser = authData => {
-    const {email, password} = authData;
+    const {user, password} = authData;
 
     return async dispatch => {
         dispatch({type: SHOW_LOADING, payload: 'Signing in'});
         try {
-            const result = await fetch(`http://10.252.178.91:8080/api/auth/signin`, {
+            const result = await fetch(`http://10.252.178.91:8080/api/authenticate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email,
-                    password,
+                    "username": user,
+                    "password": password
                 }),
             });
-
             const resultData = await result.json();
-
             if (resultData.error) {
+                console.log("Error");
                 dispatch({
                     type: 'error'
                 });
-                console.log("error")
             } else {
                 dispatch({
-                    type: 'Sucess',
+                    type: 'Sucesss',
                     payload: resultData,
                 });
             }
@@ -85,6 +82,7 @@ export const loginUser = authData => {
             dispatch({
                 type: 'Fail',
             });
+            console.log("what")
         }
     };
 };

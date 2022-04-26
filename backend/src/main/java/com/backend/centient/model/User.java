@@ -24,6 +24,13 @@ public class User {
     @Column(nullable = false, unique = true, length = 45)
     private String email;
 
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     @Column(nullable = false, length = 64)
     private String password;
 
