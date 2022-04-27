@@ -1,16 +1,12 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity, Alert,} from 'react-native';
 import {Formik} from 'formik';
 
-import * as authAction from "../redux/actions/authAction";
-import {useDispatch} from "react-redux";
 import {Input} from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
-import {LOGIN_USER_FAIL, LOGIN_USER_SUCCESS} from "../redux/actions/authAction";
 
 
 function ForgotPassword({navigation}) {
-    const dispatch = useDispatch();
     return (
         <View style={styles.container}>
             <Image style={styles.background} source={require('../assets/IMG_0008.jpg')}/>
@@ -21,7 +17,7 @@ function ForgotPassword({navigation}) {
                     password: '',
                 }}
                 onSubmit={values => {
-                    dispatch(authAction.registerUser(values))
+                    forgotPass(values)
                 }}>
                 {props => (
                     <View>
@@ -45,7 +41,7 @@ function ForgotPassword({navigation}) {
                             }
                             errorMessage={props.touched.email && props.errors.email}
                         />
-                        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('Login')}>
+                        <TouchableOpacity style={styles.submitButton} onPress={() => props.handleSubmit}>
                             <Text style={styles.textStyles}>R E S E T P A S S W O R D</Text>
                         </TouchableOpacity>
                     </View>

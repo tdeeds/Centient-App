@@ -2,12 +2,36 @@ import {Pressable, Image, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoi
 import React, {useState} from "react";
 import {Formik} from "formik";
 import * as Yup from "yup";
-import {useDispatch} from "react-redux";
-import * as authAction from "../redux/actions/authAction";
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
 import {Input} from "react-native-elements";
+import {AuthContext} from "../Components/context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+async function login(authData) {
+    const {user, password} = authData;
+    try {
+        const result = await fetch(`http://10.252.178.91:8080/api/authenticate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": user,
+                "password": password
+            }),
+        });
+        const resultData = await result.json();
+        if (!resultData.error) {
+            console.log('success');
+        } else {
+            console.log('error')
+        }
+        return resultData;
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 const LoginSchema = Yup.object().shape({
     user: Yup.string().max(10, 'Short usernames only amigo').required('Required'),
@@ -15,8 +39,7 @@ const LoginSchema = Yup.object().shape({
 })
 
 function LoginScreen({navigation}) {
-
-    const dispatch = useDispatch();
+    const {signIn} = React.useContext(AuthContext)
     const [data, setData] = useState({
         secureTextEntry: false,
     });
@@ -38,7 +61,19 @@ function LoginScreen({navigation}) {
                 }}
                 validationSchema={LoginSchema}
                 onSubmit={values => {
-                    dispatch(authAction.loginUser(values))
+                    login(values)
+                        .then(async result => {
+                            try {
+                                signIn();
+                                console.log(result)
+                                await AsyncStorage.setItem(
+                                    'userData',
+                                    JSON.stringify(result),
+                                );
+                            } catch (err) {
+                                console.log(err);
+                            }
+                        })
                 }}>
                 {props => (
                     <View>
@@ -164,3 +199,5 @@ const styles = StyleSheet.create({
         fontSize: 17
     }
 });
+
+

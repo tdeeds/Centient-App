@@ -1,8 +1,6 @@
-import * as budgetAction from "../redux/actions/budgetAction";
 import {StyleSheet, Image, TouchableOpacity, View} from "react-native";
 import {Formik} from "formik";
 import * as Yup from "yup";
-import {useDispatch} from "react-redux";
 import {Input} from "react-native-elements";
 
 
@@ -12,8 +10,6 @@ const AddExpenseSchema = Yup.object().shape({
 })
 
 export default function AddExpense({navigation}) {
-
-    const dispatch = useDispatch();
 
     return (
         <View style={styles.container}>
@@ -25,7 +21,7 @@ export default function AddExpense({navigation}) {
                 }}
                 validationSchema={AddExpenseSchema}
                 onSubmit={values => {
-                    dispatch(budgetAction.addExpense(values))
+                    addExpense(values)
                 }}>
                 {props => (
                     <View>

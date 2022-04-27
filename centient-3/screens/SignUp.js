@@ -1,13 +1,39 @@
 import React, {useState} from "react";
 import {StyleSheet, Text, View, Image, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
-import {useDispatch} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import * as authAction from '../redux/actions/authAction';
 import {Input} from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
+import {AuthContext} from "../Components/context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
+async function signUp(authData) {
+    const {email,user, password} = authData;
+    try {
+        const result = await fetch(`http://10.252.178.91:8080/api/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "email": email,
+                "username": user,
+                "password": password
+            }),
+        });
+        const resultData = await result.json();
+        if (!resultData.error) {
+            console.log('success');
+        } else {
+            console.log('error')
+        }
+        return resultData;
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -16,7 +42,7 @@ const SignupSchema = Yup.object().shape({
 })
 
 export default function SignUp({navigation}) {
-    const dispatch = useDispatch();
+    const {Register} = React.useContext(AuthContext)
     const [data, setData] = useState({
         secureTextEntry: false,
     });
@@ -39,7 +65,19 @@ export default function SignUp({navigation}) {
                 }}
                 validationSchema={SignupSchema}
                 onSubmit={values => {
-                    authAction.signup(values)
+                    signUp(values)
+                        .then(async result => {
+                            try {
+                                Register();
+                                console.log(result)
+                                await AsyncStorage.setItem(
+                                    'userData',
+                                    JSON.stringify(result),
+                                );
+                            } catch (err) {
+                                console.log(err);
+                            }
+                        })
                 }}>
                 {props => (
                     <KeyboardAvoidingView>

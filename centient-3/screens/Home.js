@@ -1,12 +1,10 @@
-import {Image, ScrollView, StyleSheet, Text, TextInput, SafeAreaView, TouchableOpacity, View} from "react-native";
-import {useDispatch} from "react-redux";
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as Animatable from 'react-native-animatable';
 import AddExpense from "./AddExpense";
 import React from "react";
 
 
 export default function Home({navigation}) {
-    const dispatch = useDispatch();
 
     return (
         <View style={styles.container}>

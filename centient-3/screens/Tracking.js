@@ -1,10 +1,8 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
 import React, {useState} from "react";
 
 
 export default function Tracking({navigation}) {
-    const dispatch = useDispatch();
     const [category, setCategory] = useState([]);
     const onPress = (newCategory) => {
         setCategory(category => [...category, newCategory]);

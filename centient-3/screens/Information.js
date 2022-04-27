@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import {useDispatch} from 'react-redux';
 import {Formik} from 'formik';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -14,7 +13,6 @@ const InfoSchema = Yup.object().shape({
 })
 
 export default function Information({navigation}) {
-    const dispatch = useDispatch();
 
     return (
         <View style={styles.container}>
@@ -27,7 +25,7 @@ export default function Information({navigation}) {
                 }}
                 validationSchema={InfoSchema}
                 onSubmit={values => {
-                    dispatch(budgetAction.getInfo(values))
+                    getInfo(values)
                 }}>
                 {props => (
                     <View>
@@ -55,7 +53,7 @@ export default function Information({navigation}) {
                             style={styles.textStyles}
                             placeholder="Enter Location"
                             placeholderTextColor="#ffffff"
-                            onChangeText={props.handleChange('location')}
+                            onChangeText={props.handleChange('Location')}
                             value={props.values.location}
                             onBlur={props.handleBlur('location')}
                             rightIcon={
@@ -75,7 +73,7 @@ export default function Information({navigation}) {
                             style={styles.textStyles}
                             placeholder="Enter Income"
                             placeholderTextColor="#ffffff"
-                            onChangeText={props.handleChange('income')}
+                            onChangeText={props.handleChange('Income')}
                             value={props.values.income}
                             onBlur={props.handleBlur('income')}
                             rightIcon={

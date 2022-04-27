@@ -1,44 +1,79 @@
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ForgotPassword from "./screens/ForgotPassword";
-import LoginScreen from "./screens/LoginScreen";
-import SignUp from "./screens/SignUp";
+import { createDrawerNavigator} from "@react-navigation/drawer";
+import RootStackScreen from "./Navigations/RootStackScreen";
 import Home from "./screens/Home";
 import AddExpense from "./screens/AddExpense";
-import Information from "./screens/Information";
-import Tracking from "./screens/Tracking";
-import store from "./redux/store";
+import { DrawerContent }from "./Navigations/DrawerContent";
+import {useEffect} from "react";
+import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {AuthContext} from "./Components/context";
+
+React.createContext();
 
 const Stack = createNativeStackNavigator();
 
-const AppWrapper = () => {
-    return (
-        <Provider store={store}>
-            <App/>
-        </Provider>
-    );
-};
+const Drawer = createDrawerNavigator();
 
-function App() {
-    const dispatch = useDispatch();
-    const token = useSelector(state => state.auth.token);
-    const loading = useSelector(state => state.loading);
+
+const App = () => {
+    const [token,setToken] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
+
+
+    const authContext = React.useMemo( () => ({
+       signIn: async () => {
+           let tmpData;
+           tmpData = await AsyncStorage.getItem('userData');
+           if (tmpData) {
+               setLoading(false);
+               setToken(tmpData);
+           }
+       },
+        Register: async () => {
+            let tmpData;
+            tmpData = await AsyncStorage.getItem('userData');
+            if (tmpData) {
+                setLoading(false);
+                setToken(tmpData);
+            }
+        },
+        signOut: async () => {
+            let tmpData;
+            tmpData = await AsyncStorage.getItem('userData');
+            if (!tmpData) {
+                setLoading(false);
+                setToken(null);
+            }
+        }
+    }));
+
+
+    useEffect(() => {
+        setTimeout(async () =>{
+            setLoading(false);
+        }, 1000);
+    }, []);
 
     return (
+        <AuthContext.Provider value={authContext}>
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen}/>
-                <Stack.Screen options={{headerShown: false}} name="SignUp" component={SignUp}/>
-                <Stack.Screen options={{headerShown: false}} name="ForgotPassword" component={ForgotPassword}/>
+            {token != null ? (
+                <Drawer.Navigator
+                    headerMode="none"
+                    drawerContent={props => <DrawerContent {...props} />}>
                 <Stack.Screen options={{headerShown: false}} name="Home" component={Home}/>
                 <Stack.Screen options={{headerShown: false}} name="AddExpense" component={AddExpense}/>
-                <Stack.Screen options={{headerShown: false}} name="Information" component={Information}/>
-                <Stack.Screen options={{headerShown: false}} name="Tracking" component={Tracking}/>
-            </Stack.Navigator>
+                </Drawer.Navigator>
+                ) : (
+                    <RootStackScreen />
+                )}
         </NavigationContainer>
+        </AuthContext.Provider>
     );
 }
 
-export default AppWrapper;
+export default App;
 
