@@ -1,15 +1,52 @@
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import {Input} from 'react-native-elements';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
 
+
+async function getInfo(authData) {
+    const {use, age, income , location} = authData;
+    try {
+        const result = await fetch(`http://10.252.178.91:8080/api/information`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "user": user,
+                "age": age,
+                "income": income,
+                "location": location
+            }),
+        });
+        const resultData = await result.json();
+        if (!resultData.error) {
+            console.log('success');
+        } else {
+            Alert.alert(
+                "ERROR",
+                "Incorrect User"
+            )
+            console.log('error')
+        }
+        console.log("Result Data" + resultData);
+        return resultData;
+    } catch (e) {
+        Alert.alert(
+            "ERROR",
+            "Incorrect User"
+        )
+    }
+}
 
 const InfoSchema = Yup.object().shape({
+    user: Yup.string().required('Input User'),
     age: Yup.number().required('Must Input Age'),
-    location: Yup.string().required('Must Input Location'),
-    income: Yup.number().required('Required'),
+    income: Yup.number().required('Must Input Income'),
 })
 
 export default function Information({navigation}) {
@@ -19,16 +56,50 @@ export default function Information({navigation}) {
             <Image style={styles.background} source={require('../assets/IMG_0008.jpg')}/>
             <Formik
                 initialValues={{
-                    email: '',
                     user: '',
-                    password: ''
+                    age: '',
+                    income: ''
                 }}
                 validationSchema={InfoSchema}
                 onSubmit={values => {
                     getInfo(values)
+                        .then(async result => {
+                            try {
+                                if (result !== 'error') {
+                                    console.log(result)
+                                    await AsyncStorage.setItem(
+                                        'userData',
+                                        JSON.stringify(result),
+                                    );
+                                    navigation.navigate('Tracking');
+                                }
+                            } catch (err) {
+                                console.log(err);
+                            }
+                        })
                 }}>
                 {props => (
                     <View>
+                        <Input
+                            style={styles.textStyles}
+                            placeholder="Re-Enter User"
+                            placeholderTextColor="#ffffff"
+                            onChangeText={props.handleChange('user')}
+                            value={props.values.user}
+                            onBlur={props.handleBlur('user')}
+                            rightIcon={
+                                !props.errors.user && props.values.user ? (
+                                    <Animatable.View animation="bounceIn">
+                                        <Feather
+                                            name="check-circle"
+                                            color={'#19ff00'}
+                                            size={20}
+                                        />
+                                    </Animatable.View>
+                                ) : null
+                            }
+                            errorMessage={props.touched.user && props.errors.user}
+                        />
                         <Input
                             style={styles.textStyles}
                             placeholder="Enter Age"
@@ -51,29 +122,9 @@ export default function Information({navigation}) {
                         />
                         <Input
                             style={styles.textStyles}
-                            placeholder="Enter Location"
-                            placeholderTextColor="#ffffff"
-                            onChangeText={props.handleChange('Location')}
-                            value={props.values.location}
-                            onBlur={props.handleBlur('location')}
-                            rightIcon={
-                                !props.errors.location && props.values.location ? (
-                                    <Animatable.View animation="bounceIn">
-                                        <Feather
-                                            name="check-circle"
-                                            color={'#19ff00'}
-                                            size={20}
-                                        />
-                                    </Animatable.View>
-                                ) : null
-                            }
-                            errorMessage={props.touched.location && props.errors.location}
-                        />
-                        <Input
-                            style={styles.textStyles}
                             placeholder="Enter Income"
                             placeholderTextColor="#ffffff"
-                            onChangeText={props.handleChange('Income')}
+                            onChangeText={props.handleChange('income')}
                             value={props.values.income}
                             onBlur={props.handleBlur('income')}
                             rightIcon={
@@ -89,8 +140,8 @@ export default function Information({navigation}) {
                             }
                             errorMessage={props.touched.income && props.errors.income}
                         />
-                        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('Tracking')}>
-                            <Text style={styles.textStyles}>N E X T</Text>
+                        <TouchableOpacity style={styles.submitButton} onPress={props.handleSubmit}>
+                            <Text style={styles.textStyles2}>N E X T</Text>
                         </TouchableOpacity>
                     </View>
                 )
@@ -98,7 +149,6 @@ export default function Information({navigation}) {
             </Formik>
         </View>
     )
-
 }
 
 const styles = StyleSheet.create({
@@ -125,6 +175,13 @@ const styles = StyleSheet.create({
     textStyles: {
         fontSize: 17,
         fontWeight: "bold",
-        fontFamily: "Verdana-Bold"
+        fontFamily: "Verdana-Bold",
+        color: "white"
+    },
+    textStyles2: {
+        color: "black",
+        fontFamily: "Verdana-Bold",
+        fontWeight: "bold",
+        fontSize: 18
     }
 })

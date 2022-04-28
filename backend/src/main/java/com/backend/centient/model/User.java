@@ -17,19 +17,41 @@ public class User {
         this.password = password;
     }
 
+    public User(String username,String age, String income,String location) {
+        this.username=username;
+        this.age = age;
+        this.income = income;
+        this.location=location;
+    }
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true, length = 45)
+    @Column(unique = true, length = 45)
     private String username;
 
-    @Column(nullable = false, unique = true, length = 45)
+    @Column(unique = true, length = 45)
     private String email;
 
+    @Column
+    private String age;
+
+    @Column
+    private String location;
+
+    @Column
+    private String income;
+
+    @Column
+    private String categories;
+
+    @Column
+    private String budget;
 
 
-    @Column(nullable = false, length = 64)
+    @Column(length = 64)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

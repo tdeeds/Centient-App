@@ -7,7 +7,6 @@ import SignUpScreen from '../screens/SignUp';
 import ForgotPassword from "../screens/ForgotPassword";
 import Information from "../screens/Information";
 import Tracking from "../screens/Tracking";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const RootStack = createNativeStackNavigator();
@@ -17,8 +16,8 @@ const RootStackScreen = ({navigation}) => (
         <RootStack.Screen options={{headerShown: false}} name="SignInScreen" component={LoginScreen}/>
         <RootStack.Screen options={{headerShown: false}} name="SignUpScreen" component={SignUpScreen}/>
         <RootStack.Screen options={{headerShown: false}} name="ForgotPassword" component={ForgotPassword}/>
-            <RootStack.Screen options={{headerShown: false}} name="Information" component={Information}/>
-            <RootStack.Screen options={{headerShown: false}} name="Tracking" component={Tracking}/>
+        <RootStack.Screen options={{headerShown: false}} name="Information" component={Information}/>
+        <RootStack.Screen options={{headerShown: false}} name="Tracking" component={Tracking}/>
 
 
     </RootStack.Navigator>

@@ -49,6 +49,7 @@ const SignupSchema = Yup.object().shape({
 })
 
 export default function SignUp({navigation}) {
+    let usernameToSignup;
     const {Register} = React.useContext(AuthContext)
     const [data, setData] = useState({
         secureTextEntry: false,
@@ -81,6 +82,7 @@ export default function SignUp({navigation}) {
                                         'userData',
                                         JSON.stringify(result),
                                     );
+                                    navigation.navigate('Information');
                                 }
                             } catch (err) {
                                 console.log(err);
@@ -163,7 +165,7 @@ export default function SignUp({navigation}) {
                             />
                         </KeyboardAvoidingView>
                         <TouchableOpacity style={styles.submitButton} onPress={props.handleSubmit}>
-                            <Text style={styles.textStyles}>S I G N U P </Text>
+                            <Text style={styles.textStyles2}>S I G N U P </Text>
                         </TouchableOpacity>
                     </KeyboardAvoidingView>
                 )}
@@ -194,6 +196,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffff",
     },
     textStyles: {
+        color: "white",
+        fontFamily: "Verdana-Bold",
+        fontWeight: "bold",
+        fontSize: 18
+    },
+    textStyles2: {
         color: "black",
         fontFamily: "Verdana-Bold",
         fontWeight: "bold",

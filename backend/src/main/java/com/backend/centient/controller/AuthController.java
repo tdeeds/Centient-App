@@ -1,31 +1,21 @@
 package com.backend.centient.controller;
 
 
-import com.backend.centient.dto.AuthenticationRequest;
-import com.backend.centient.dto.AuthenticationResponse;
-import com.backend.centient.dto.SignUpResponse;
-import com.backend.centient.dto.SignupRequest;
+import com.backend.centient.dto.*;
 import com.backend.centient.util.jwtUtil;
 import com.backend.centient.model.User;
 import com.backend.centient.repository.UserRepository;
 import com.backend.centient.security.SecurityUserDetailsService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -82,6 +72,24 @@ public class AuthController {
 
         return ResponseEntity.ok(new SignUpResponse("success"));
     }
+
+    @RequestMapping(value = "/information", method = RequestMethod.POST)
+    public ResponseEntity<?> information(@RequestBody InformationRequest informationRequest) {
+
+        Optional<User> user = userRepository.findByUsername(informationRequest.getUser());
+
+        
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new SignUpResponse("success"));
+    }
+
+
+
+
+    //TODO
+    // Add post location, age, and income methods
+    // Add initial budget creation method
 
 }
 
