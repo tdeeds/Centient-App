@@ -1,4 +1,4 @@
-import {Pressable, Image, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView} from "react-native";
+import {Pressable, Image, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView, Alert} from "react-native";
 import React, {useState} from "react";
 import {Formik} from "formik";
 import * as Yup from "yup";
@@ -25,11 +25,19 @@ async function login(authData) {
         if (!resultData.error) {
             console.log('success');
         } else {
+            Alert.alert(
+                "ERROR",
+                "Incorrect User or Password"
+            )
             console.log('error')
         }
+        console.log("Result Data" + resultData);
         return resultData;
     } catch (e) {
-        console.log(e);
+        Alert.alert(
+            "ERROR",
+            "Incorrect User or Password"
+        )
     }
 }
 
@@ -64,12 +72,17 @@ function LoginScreen({navigation}) {
                     login(values)
                         .then(async result => {
                             try {
-                                signIn();
-                                console.log(result)
-                                await AsyncStorage.setItem(
-                                    'userData',
-                                    JSON.stringify(result),
-                                );
+                                if (result !== undefined){
+                                    signIn();
+                                    console.log(result)
+                                    await AsyncStorage.setItem(
+                                        'userData',
+                                        JSON.stringify(result),
+                                    );
+                                }
+                                else {
+                                    console.log("error");
+                                }
                             } catch (err) {
                                 console.log(err);
                             }
@@ -137,7 +150,7 @@ function LoginScreen({navigation}) {
                         <TouchableOpacity style={styles.login} onPress={props.handleSubmit}>
                             <Text style={styles.textStyles1}>L O G I N</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.signUp} onPress={() => navigation.navigate('SignUp')}>
+                        <TouchableOpacity style={styles.signUp} onPress={() => navigation.navigate('SignUpScreen')}>
                             <Text style={styles.textStyles}> S I G N U P</Text>
                         </TouchableOpacity>
                     </View>

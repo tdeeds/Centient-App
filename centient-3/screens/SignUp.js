@@ -1,33 +1,40 @@
 import React, {useState} from "react";
-import {StyleSheet, Text, View, Image, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, KeyboardAvoidingView, Alert} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {Input} from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
-import {AuthContext} from "../Components/context";
+import {AuthContext, SignUpContext} from "../Components/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 async function signUp(authData) {
-    const {email,user, password} = authData;
+    const {email, user, password} = authData;
     try {
-        const result = await fetch(`http://10.252.178.91:8080/api/signup`, {
+        const result = await fetch(`http://10.252.178.91:8080/api/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "email": email,
                 "username": user,
+                "email": email,
                 "password": password
             }),
         });
         const resultData = await result.json();
+        console.log(resultData)
         if (!resultData.error) {
             console.log('success');
+            console.log('result data ' + resultData);
         } else {
             console.log('error')
+            Alert.alert(
+                "ERROR",
+                "Username or email taken"
+            )
+            return 'error';
         }
         return resultData;
     } catch (e) {
@@ -68,12 +75,13 @@ export default function SignUp({navigation}) {
                     signUp(values)
                         .then(async result => {
                             try {
-                                Register();
-                                console.log(result)
-                                await AsyncStorage.setItem(
-                                    'userData',
-                                    JSON.stringify(result),
-                                );
+                                if (result !== 'error') {
+                                    console.log(result)
+                                    await AsyncStorage.setItem(
+                                        'userData',
+                                        JSON.stringify(result),
+                                    );
+                                }
                             } catch (err) {
                                 console.log(err);
                             }

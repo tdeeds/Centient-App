@@ -1,7 +1,6 @@
 package com.backend.centient.repository;
 
 import com.backend.centient.model.User;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -13,7 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 
-    @Override
-     <S extends User> S save(S entity);
 }
 

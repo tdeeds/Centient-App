@@ -1,4 +1,4 @@
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as Animatable from 'react-native-animatable';
 import AddExpense from "./AddExpense";
 import React from "react";
@@ -8,6 +8,10 @@ export default function Home({navigation}) {
 
     return (
         <View style={styles.container}>
+            <Button
+                onPress={() => navigation.navigate('AddExpense')}
+                title="Go to notifications"
+            />
             <Animatable.Image
                 animation="bounceIn"
                 duration={1500}

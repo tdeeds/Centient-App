@@ -1,21 +1,51 @@
 import React from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {View, StyleSheet} from "react-native";
 import {
     DrawerContentScrollView,
     DrawerItem
 } from "@react-navigation/drawer";
-import {useDispatch, useSelector} from "react-redux";
+import {
+    Avatar,
+    Title,
+    Caption,
+    Paragraph,
+    Drawer,
+    Text,
+    TouchableRipple,
+    Switch
+} from "react-native-paper";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AuthContext} from "../Components/context";
+
 
 export function DrawerContent(props) {
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.auth.user);
-
+const {signOut} = React.useContext(AuthContext);
 
     return (
-        <View style={{flex:1}}>
+        <View style={styles.container}>
             <DrawerContentScrollView {...props}>
-
+                <View>
+                    <Text>Test</Text>
+                </View>
             </DrawerContentScrollView>
+            <Drawer.Section style={styles.bottomDrawerSection}>
+                <DrawerItem
+                    icon={({color, size}) => (
+                        <Icon name="exit-to-app"
+                              color={color}
+                              size={size}
+                        />
+                    )}
+                    label="Sign Out"
+                    onPress={() => signOut()}
+                />
+            </Drawer.Section>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})

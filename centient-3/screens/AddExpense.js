@@ -3,6 +3,9 @@ import {Formik} from "formik";
 import * as Yup from "yup";
 import {Input} from "react-native-elements";
 
+async function add(values) {
+
+}
 
 const AddExpenseSchema = Yup.object().shape({
     category: Yup.string().required('Must have an expense category'),
@@ -21,7 +24,7 @@ export default function AddExpense({navigation}) {
                 }}
                 validationSchema={AddExpenseSchema}
                 onSubmit={values => {
-                    addExpense(values)
+                    add(values)
                 }}>
                 {props => (
                     <View>
@@ -48,7 +51,6 @@ export default function AddExpense({navigation}) {
             </Formik>
         </View>
     );
-
 }
 
 const styles = StyleSheet.create({

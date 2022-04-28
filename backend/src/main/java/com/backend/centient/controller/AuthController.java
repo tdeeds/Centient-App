@@ -3,6 +3,7 @@ package com.backend.centient.controller;
 
 import com.backend.centient.dto.AuthenticationRequest;
 import com.backend.centient.dto.AuthenticationResponse;
+import com.backend.centient.dto.SignUpResponse;
 import com.backend.centient.dto.SignupRequest;
 import com.backend.centient.util.jwtUtil;
 import com.backend.centient.model.User;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api")
 public class AuthController {
 
     @Autowired
@@ -51,36 +52,35 @@ public class AuthController {
         return "Hello World";
     }
 
-    @RequestMapping(value = "/authenticate" , method = RequestMethod.POST)
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-       try{
-           authenticationManager.authenticate(
-                   new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-           );
-       }
-       catch (BadCredentialsException e){
-           throw new Exception("Incorrect User or Pass", e);
-       }
-
-       final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
-       final String jwt = jwtUtil.generateToken(userDetails);
-
-       return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUsername(), userDetails.getPassword()));
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) throws Exception{
-
-        if (userDetailsService.loadUserByUsername(signUpRequest.getUsername()) != null) {
-            throw new Exception("User Already Exists");
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect User or Pass", e);
         }
 
-        User user = new User(signUpRequest.getUsername(),signUpRequest.getEmail(),passwordEncoder.encode(signUpRequest.getPassword()));
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
-         userRepository.save(user);
+        final String jwt = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(("User registered successfully!"));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) throws Exception {
+
+        if (userRepository.existsByUsername(signUpRequest.getUsername()) || userRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new Exception("User already Exists");
+        }
+
+        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), signUpRequest.getPassword());
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new SignUpResponse("success"));
     }
 
 }
